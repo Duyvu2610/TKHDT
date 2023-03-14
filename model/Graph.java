@@ -36,6 +36,14 @@ public class Graph {
 		}
 	}
 
+	public int[][] getMatrix() {
+		return matrix;
+	}
+
+	public void setMatrix(int[][] matrix) {
+		this.matrix = matrix;
+	}
+
 	public int[] bellmanFordSearch(int root) {
 
 		int size = matrix.length;
@@ -105,9 +113,9 @@ public class Graph {
 	}
 
 	public static void main(String[] args) {
-		String fileName = "C:\\Users\\lptdn\\eclipse-workspace\\LTDT\\src\\Tuan1\\testGraph.txt";
+		String fileName = "D:\\Work space\\TKHDT\\test.txt";
 		Graph graph = new Graph(fileName);
-		System.out.println(Arrays.toString(graph.bellmanFordSearchUtils(0, 3)));
+		System.out.println(Arrays.deepToString(graph.getMatrix()));
 	}
 
 }

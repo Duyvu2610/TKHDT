@@ -45,7 +45,7 @@ public class App extends JFrame{
 
 
     //matrix
-    JPanel matrix = new JPanel();
+    AdjacencyMatrix matrix = new AdjacencyMatrix();
     matrix.setPreferredSize(new Dimension(400, 350));
     matrix.setBorder(BorderFactory.createTitledBorder("Adjacency matrix"));
 
