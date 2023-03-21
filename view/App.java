@@ -3,15 +3,20 @@ package view;
 import javax.swing.*;
 
 import model.BFS;
+import model.CreateArrayByFile;
 import model.DFS;
+import model.ICreateArray;
 import model.IFeature;
+import model.MyArray;
 
 import java.awt.*;
 import java.util.ArrayList;
 
 public class App extends JFrame{
+    private MyArray myArr;
     private ArrayList<IFeature> menuData ;
-    public App(ArrayList<IFeature> menuData){
+    public App(ArrayList<IFeature> menuData, MyArray myArr){
+        this.myArr = myArr;
         this.menuData = menuData;
         init();
     }
@@ -45,7 +50,7 @@ public class App extends JFrame{
 
 
     //matrix
-    AdjacencyMatrix matrix = new AdjacencyMatrix();
+    AdjacencyMatrix matrix = new AdjacencyMatrix(myArr);
     matrix.setPreferredSize(new Dimension(400, 350));
     matrix.setBorder(BorderFactory.createTitledBorder("Adjacency matrix"));
 
@@ -62,9 +67,14 @@ public class App extends JFrame{
    public JPanel rightCol(){
     JPanel rightJPanel = new JPanel(new BorderLayout());
     //Screen
-    JPanel screen = new JPanel();
+    JPanel screen = new JPanel(new BorderLayout());
+    // node feature
+    NodeFeature nodeFeature = new NodeFeature();
+    // show graph
+    ShowGraph showGraph = new ShowGraph();
     screen.setPreferredSize(new Dimension((int) rightJPanel.getPreferredSize().getWidth(),500));
-    screen.setBorder(BorderFactory.createTitledBorder("hih"));
+    screen.add(showGraph, BorderLayout.CENTER);
+    screen.add(nodeFeature, BorderLayout.WEST);
     //Notify
     JPanel notify = new JPanel();
     notify.setPreferredSize(new Dimension((int) rightJPanel.getPreferredSize().getWidth(),200));
@@ -77,14 +87,14 @@ public class App extends JFrame{
     return rightJPanel;
    }
    public static void main(String[] args) {
-    ArrayList<IFeature> menuData = new ArrayList<>();
-    menuData.add(new BFS());
-    menuData.add(new BFS());
-    menuData.add(new DFS());
- 
-
-
-    App app = new App(menuData);
+       ArrayList<IFeature> menuData = new ArrayList<>();
+       menuData.add(new BFS());
+       menuData.add(new BFS());
+       menuData.add(new DFS());
+       String fileName = "D:\\Work space\\TKHDT\\test.txt";
+       ICreateArray createArr = new CreateArrayByFile(fileName);
+       MyArray arr = new MyArray(createArr);
+       new App(menuData,arr);
     }
     
     
