@@ -1,40 +1,20 @@
 package model;
 
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.Arrays;
-import java.util.Scanner;
 
-public class Graph {
-	
+public class Graph implements Observer{
+	private MyArray myArray;
 	private int[][] matrix;
 
 	public Graph() {
 	}
 
-	public Graph(String path) {
-		loadFile(path);
+	public Graph(MyArray myArray){
+		this.myArray = myArray;
+		matrix = myArray.getArray();
+		myArray.registerObserver(this);
 	}
 
-	public void loadFile(String path) {
-		File file = new File(path);
-		try {
-			int index = 0;
-			Scanner sc = new Scanner(file);
-			matrix = new int[Integer.valueOf(sc.nextLine())][];
-			while (sc.hasNextLine()) {
-				String[] line = sc.nextLine().split(" ");
-				int[] row = new int[line.length];
-				for (int i = 0; i < row.length; i++) {
-					row[i] = Integer.valueOf(line[i]);
-				}
-				matrix[index++] = row;
-			}
-			sc.close();
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
-	}
 
 	public int[][] getMatrix() {
 		return matrix;
@@ -111,11 +91,10 @@ public class Graph {
 		return result; 
 
 	}
-
-	public static void main(String[] args) {
-		String fileName = "D:\\Work space\\TKHDT\\test.txt";
-		Graph graph = new Graph(fileName);
-		System.out.println(Arrays.deepToString(graph.getMatrix()));
+	@Override
+	public void update() {
+		int [][] arr = myArray.getArray();
+		System.out.println("arr change" + Arrays.deepToString(arr));
 	}
 
 }
