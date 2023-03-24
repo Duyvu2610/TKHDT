@@ -5,9 +5,12 @@ import javax.swing.*;
 import model.BFS;
 import model.CreateArrayByFile;
 import model.DFS;
+import model.Graph;
 import model.ICreateArray;
 import model.IFeature;
 import model.MyArray;
+import model.Observer;
+import model.Subject;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -15,9 +18,11 @@ import java.util.ArrayList;
 public class App extends JFrame{
     private MyArray myArr;
     private ArrayList<IFeature> menuData ;
-    public App(ArrayList<IFeature> menuData, MyArray myArr){
+    private ICreateArray iCreateArray;
+    public App(ArrayList<IFeature> menuData, MyArray myArr,ICreateArray iCreateArray){
         this.myArr = myArr;
         this.menuData = menuData;
+        this.iCreateArray = iCreateArray;
         init();
     }
     private void init(){
@@ -92,9 +97,10 @@ public class App extends JFrame{
        menuData.add(new BFS());
        menuData.add(new DFS());
        String fileName = "D:\\PJ\\TKHDT\\test.txt";
+       Graph subject = new Graph();
        ICreateArray createArr = new CreateArrayByFile(fileName);
-       MyArray arr = new MyArray(createArr);
-       new App(menuData,arr);
+       MyArray arr = new MyArray(subject,createArr);
+       new App(menuData,arr,createArr);
     }
     
     

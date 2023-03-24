@@ -5,36 +5,58 @@ import java.io.FileNotFoundException;
 import java.util.Arrays;
 import java.util.Scanner;
 
-public class CreateArrayByFile implements ICreateArray{
-    private String path;
-    
-    public CreateArrayByFile(String path) {
-        this.path = path;
-    }
+public class CreateArrayByFile implements ICreateArray {
+	private String path;
+	private int size;
+	private  int[][] result;
+	
+	public CreateArrayByFile() {
+		
+	}
 
-    @Override
-    public int[][] createArr() {
-        int[][] result;
-        File file = new File(path);
+	public CreateArrayByFile(String path) {
+		this.path = path;
+	}
+
+	public CreateArrayByFile(int crSize) {
+		this.size = crSize;
+	}
+
+	@Override
+	public int[][] createArr() {
+		int[][] resultbyFile;
+		File file = new File(path);
 		try {
 			int index = 0;
 			Scanner sc = new Scanner(file);
-			result = new int[Integer.valueOf(sc.nextLine())][];
+			resultbyFile = new int[Integer.valueOf(sc.nextLine())][];
 			while (sc.hasNextLine()) {
 				String[] line = sc.nextLine().split(" ");
 				int[] row = new int[line.length];
 				for (int i = 0; i < row.length; i++) {
 					row[i] = Integer.valueOf(line[i]);
 				}
-				result[index++] = row;
+				resultbyFile[index++] = row;
 			}
 			sc.close();
-            return result;
+			return resultbyFile;
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
-		
-        return null;
-    }
-    
+
+		return null;
+	}
+	
+	
+	public int[][] createArr(int crSize){
+		result = new int[crSize][crSize];
+		return result;
+	}
+
+	@Override
+	public int[][] getResult() {
+		// TODO Auto-generated method stub
+		return this.result;
+	}
+
 }

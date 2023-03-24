@@ -1,20 +1,24 @@
 package model;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
-public class Graph implements Observer{
-	private MyArray myArray;
+import view.Node;
+
+public class Graph implements Subject {
 	private int[][] matrix;
+	public List<Observer> listObservers = new ArrayList<>();;
+	public List<Node> listNodes;
+	private int crSize;
 
 	public Graph() {
+		listNodes = new ArrayList<>();
 	}
 
-	public Graph(MyArray myArray){
-		this.myArray = myArray;
-		matrix = myArray.getArray();
-		myArray.registerObserver(this);
+	public int getSize() {
+		return this.listNodes.size();
 	}
-
 
 	public int[][] getMatrix() {
 		return matrix;
@@ -75,26 +79,48 @@ public class Graph implements Observer{
 
 			int currentNode = goal;
 			do {
-				resReverseStr.append( currentNode + " " );
+				resReverseStr.append(currentNode + " ");
 				currentNode = listParentNode[currentNode];
 				if (currentNode == root) {
-					resReverseStr.append( currentNode + " " );
+					resReverseStr.append(currentNode + " ");
 				}
 			} while (currentNode != root);
-			
+
 			String[] resStr = resReverseStr.reverse().substring(1).split(" ");
 			result = new int[resStr.length];
-			for (String character: resStr) {
+			for (String character : resStr) {
 				result[index++] = Integer.valueOf(character);
 			}
 		}
-		return result; 
+		return result;
 
 	}
+
 	@Override
-	public void update() {
-		int [][] arr = myArray.getArray();
-		System.out.println("arr change" + Arrays.deepToString(arr));
+	public void registerObserver(Observer observer) {
+		// TODO Auto-generated method
+			listObservers.add(observer);
+	}
+
+	@Override
+	public void removeObserver(Observer observer) {
+		if (listObservers.contains(observer))
+			listObservers.remove(listObservers.indexOf(observer));
+	}
+
+	@Override
+	public void notifyObservers() {
+		System.out.println(listObservers.size());
+		for (Observer obs : listObservers) {
+			obs.update(this.crSize);
+		}
+	}
+
+	public void meantsureUpdate(int bfSize, int crSize) {
+		this.crSize = crSize;
+		if (bfSize != crSize) {
+			notifyObservers();
+		}
 	}
 
 }
