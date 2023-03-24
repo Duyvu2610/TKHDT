@@ -91,7 +91,7 @@ public class App extends JFrame{
        menuData.add(new BFS());
        menuData.add(new BFS());
        menuData.add(new DFS());
-       String fileName = "D:\\Work space\\TKHDT\\test.txt";
+       String fileName = "D:\\PJ\\TKHDT\\test.txt";
        ICreateArray createArr = new CreateArrayByFile(fileName);
        MyArray arr = new MyArray(createArr);
        new App(menuData,arr);
