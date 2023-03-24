@@ -2,6 +2,7 @@ package view;
 
 import javax.swing.*;
 
+import model.ICreateArray;
 import model.MyArray;
 
 import java.awt.*;
@@ -10,12 +11,11 @@ public class AdjacencyMatrix extends JPanel {
     private MyArray arr;
     private int size;
 
-    public AdjacencyMatrix(MyArray arr) {
-        this.arr = arr;
+    public AdjacencyMatrix(MyArray myArray) {
+        this.arr = myArray;
         int[][] matrix = arr.getArray() == null ?  new int[0][0]:arr.getArray();
         this.size = matrix.length + 1;
         int[][] matrix1 = new int[size][size];
-        
 
         setLayout(new GridLayout(size, size));
 
