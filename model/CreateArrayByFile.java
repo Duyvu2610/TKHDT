@@ -55,7 +55,6 @@ public class CreateArrayByFile implements ICreateArray {
 
 	@Override
 	public int[][] getResult() {
-		// TODO Auto-generated method stub
 		return this.result;
 	}
 

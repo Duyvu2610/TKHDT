@@ -8,7 +8,7 @@ import java.util.List;
 //nhu them,xoa,sua,so dinh
 public class MyArray implements Observer {
 	ICreateArray createArray;
-	int[][] myArray ;
+	int[][] myArray;
 	Subject subject;
 
 	public MyArray(Subject subject, ICreateArray createArray) {
@@ -27,7 +27,6 @@ public class MyArray implements Observer {
 
 	@Override
 	public void update(int crSize) {
-		System.out.println("update Myarray");
-		this.createArray.createArr(crSize);
+		myArray = this.createArray.createArr(crSize);
 	}
 }
