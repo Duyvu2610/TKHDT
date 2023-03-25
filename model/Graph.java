@@ -8,12 +8,15 @@ import view.Node;
 
 public class Graph implements Subject {
 	private int[][] matrix;
-	public List<Observer> listObservers = new ArrayList<>();;
-	public List<Node> listNodes;
+	public List<Node> listNodes = new ArrayList<>();;
+	List<Observer> observers;
 	private int crSize;
-
+	
 	public Graph() {
-		listNodes = new ArrayList<>();
+	}
+
+	public Graph(List<Observer> obs) {
+		this.observers = obs;
 	}
 
 	public int getSize() {
@@ -99,19 +102,18 @@ public class Graph implements Subject {
 	@Override
 	public void registerObserver(Observer observer) {
 		// TODO Auto-generated method
-			listObservers.add(observer);
+		observers.add(observer);
 	}
 
 	@Override
 	public void removeObserver(Observer observer) {
-		if (listObservers.contains(observer))
-			listObservers.remove(listObservers.indexOf(observer));
+		if (observers.contains(observer))
+			observers.remove(observers.indexOf(observer));
 	}
 
 	@Override
 	public void notifyObservers() {
-		System.out.println(listObservers.size());
-		for (Observer obs : listObservers) {
+		for (Observer obs : observers) {
 			obs.update(this.crSize);
 		}
 	}
