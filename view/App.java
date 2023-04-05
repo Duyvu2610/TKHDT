@@ -1,32 +1,31 @@
 package view;
 
-import javax.swing.*;
+import java.awt.BorderLayout;
+import java.awt.Dimension;
 
-import model.BFS;
-import model.CreateArrayByFile;
-import model.DFS;
+import javax.swing.BorderFactory;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+
+import controller.GraphController;
 import model.Graph;
-import model.ICreateArray;
-import model.IFeature;
-import model.MyArray;
-import model.Observer;
-import model.Subject;
+import model.GraphModel;
 
-import java.awt.*;
-import java.util.ArrayList;
-import java.util.List;
+public class App extends JFrame implements model.Observer {
+	private GraphModel graphModel;
+	private GraphController graphController;
+	private GraphView graphView;
+	private MatrixView matrixView;
+	
+	private JPanel leftCol;
+	private NotifyView notify;
 
-public class App extends JFrame {
-	private MyArray myArr;
-	private ArrayList<IFeature> menuData;
-	Graph graph;
 
-//    private ICreateArray iCreateArray;
-	public App(ArrayList<IFeature> menuData, MyArray myArr, Graph graph) {
-		this.myArr = myArr;
-		this.graph = graph;
-		this.menuData = menuData;
-//        this.iCreateArray = iCreateArray;
+	public App(GraphModel graphModel, GraphController graphController) {
+		this.graphModel = graphModel;
+		this.graphController = graphController;
+		graphController.setView(this);
+		graphController.registerObserver(this);
 		init();
 	}
 
@@ -37,8 +36,9 @@ public class App extends JFrame {
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setLayout(new BorderLayout());
 		JPanel app = new JPanel(new BorderLayout());
+		leftCol = leftCol();
 		app.setPreferredSize(new Dimension(1200, 700));
-		app.add(leftCol(), BorderLayout.WEST);
+		app.add(leftCol, BorderLayout.WEST);
 		app.add(rightCol());
 		app.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 		add(app);
@@ -49,18 +49,16 @@ public class App extends JFrame {
 		JPanel leftJPanel = new JPanel();
 		leftJPanel.setLayout(new BorderLayout());
 		// Menu
-		Menu menu = new Menu(menuData);
+		MenuView menu = new MenuView();
 		menu.setPreferredSize(new Dimension(400, 200));
 		// File
-		Menu file = new Menu(menuData);
+		FileView file = new FileView();
 
 		file.setPreferredSize(new Dimension(400, 150));
 		file.setBorder(BorderFactory.createTitledBorder("File"));
 
 		// matrix
-		AdjacencyMatrix matrix = new AdjacencyMatrix(myArr);
-		matrix.setPreferredSize(new Dimension(400, 350));
-		matrix.setBorder(BorderFactory.createTitledBorder("Adjacency matrix"));
+		matrixView = new MatrixView(graphController.getGraph());
 
 		//
 		leftJPanel.setPreferredSize(new Dimension(400, 700));
@@ -68,25 +66,23 @@ public class App extends JFrame {
 		// add component
 		leftJPanel.add(menu, BorderLayout.NORTH);
 		leftJPanel.add(file);
-		leftJPanel.add(matrix, BorderLayout.SOUTH);
+		leftJPanel.add(matrixView, BorderLayout.SOUTH);
 		return leftJPanel;
 	}
 
 	public JPanel rightCol() {
 		JPanel rightJPanel = new JPanel(new BorderLayout());
 		// Screen
-		JPanel screen = new JPanel(new BorderLayout());
+		JPanel screen = new JPanel(new BorderLayout(5, 0));
 		// node feature
-		NodeFeature nodeFeature = new NodeFeature();
+		FeatureView featureView = new FeatureView(graphController);
 		// show graph
-		ShowGraph showGraph = new ShowGraph(this.graph,myArr);
+		graphView = new GraphView(graphController);
 		screen.setPreferredSize(new Dimension((int) rightJPanel.getPreferredSize().getWidth(), 500));
-		screen.add(showGraph, BorderLayout.CENTER);
-		screen.add(nodeFeature, BorderLayout.WEST);
+		screen.add(graphView, BorderLayout.CENTER);
+		screen.add(featureView, BorderLayout.WEST);
 		// Notify
-		JPanel notify = new JPanel();
-		notify.setPreferredSize(new Dimension((int) rightJPanel.getPreferredSize().getWidth(), 200));
-		notify.setBorder(BorderFactory.createTitledBorder("hih"));
+		notify = new NotifyView("");
 		rightJPanel.setBorder(BorderFactory.createTitledBorder(getTitle()));
 
 		// add component
@@ -96,16 +92,26 @@ public class App extends JFrame {
 	}
 
 	public static void main(String[] args) {
-		ArrayList<IFeature> menuData = new ArrayList<>();
-		menuData.add(new BFS());
-		menuData.add(new BFS());
-		menuData.add(new DFS());
-		String fileName = "D:\\PJ\\TKHDT\\test.txt";
-		List<Observer> listObservers = new ArrayList<>();
-		Graph subject = new Graph(listObservers);
-		ICreateArray createArr = new CreateArrayByFile(subject.getSize());
-		MyArray arr = new MyArray(subject, createArr);
-		new App(menuData, arr, subject);
+		Graph graph = new Graph();
+		GraphModel gm = new GraphModel(graph);
+		GraphController gc1 = new GraphController(gm);
+		new App(gm, gc1);
 	}
+
+	@Override
+	public void updateGraph(Graph g) {
+		// TODO Auto-generated method stub
+		leftCol.remove(matrixView);
+		matrixView = new MatrixView(g);
+		leftCol.add(matrixView, BorderLayout.SOUTH);
+		leftCol.validate();
+		leftCol.repaint();
+	}
+
+	public void updateNotify(String s) {
+		notify.updateNotify(s);
+		
+	}
+
 
 }
