@@ -4,43 +4,36 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Ellipse2D.Float;
 
-public class VertexView {
-    private Ellipse2D.Float el = new Ellipse2D.Float();
-    private String label;
+import javax.swing.JPanel;
 
-    public VertexView(Ellipse2D.Float el, String label) {
-        setEl(el);
-        setLabel(label);
-    }
+import model.Vertex;
 
-    private void setEl(Float el2) {
-        this.el = el2;
-    }
+public class VertexView extends JPanel{
 
-    private void setLabel(String label) {
-        this.label = label;
-    }
 
-    public void drawPoint(Graphics2D g, int index, Color colorPoint) {
-        g.setColor(colorPoint);
-        g.fill(el);
+	public void drawPoint(Graphics2D g, Color colorPoint,int x, int y,int r, String name) {
+		Ellipse2D.Float el = new Ellipse2D.Float(x, y, r*2, r*2);
+		g.setColor(colorPoint);
+		g.fill(el);
 
-        // set font and color for label
-        g.setFont(new Font("Arial", Font.PLAIN, 12));
-        g.setColor(Color.BLACK);
+		// set font and color for label
+		g.setFont(new Font("Arial", Font.PLAIN, 12));
+		g.setColor(Color.BLACK);
 
-        // get font metrics
-        FontMetrics fm = g.getFontMetrics();
+		// get font metrics
+		FontMetrics fm = g.getFontMetrics();
 
-        // calculate label position
-        int x = (int) (el.getX() + el.getWidth() / 2 - fm.stringWidth(label) / 2);
-        int y = (int) (el.getY() + el.getHeight() / 2 + fm.getAscent() / 2);
+		// calculate label position
+		int xLabel = (int) (el.getX() + el.getWidth() / 2 - fm.stringWidth(name) / 2);
+		int yLabel = (int) (el.getY() + el.getHeight() / 2 + fm.getAscent() / 2);
 
-        // draw label
-        g.drawString(label, x, y);
-    }
+		// draw label
+		g.drawString(name, xLabel, yLabel);
+	}
+
+    
 }
-

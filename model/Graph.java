@@ -1,12 +1,9 @@
 package model;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-
-import view.MatrixView;
 
 public class Graph{
 	// 1 graph se bao gom cac dinh va cac canh tuong ung cua no
@@ -16,7 +13,7 @@ public class Graph{
 
 	// khoi tao graph
 	public Graph() {
-		this.adjacencyList = new HashMap<>();
+		this.adjacencyList = new LinkedHashMap<>();
 		this.adjacencyMatrix = new int[0][0];
 	}
 	// them 1 dinh
@@ -24,6 +21,34 @@ public class Graph{
 		adjacencyList.put(vertex, new ArrayList<>());
 		setAdjacencyMatrix();
 		
+	}
+	// Xóa 1 đỉnh
+	public void removeVertex(Vertex vertex) {
+	    // Xóa tất cả các cạnh liên quan đến đỉnh này (cả ở adjacency list và adjacency matrix).
+//	    List<Edge> edgesToRemove = new ArrayList<>();
+//	    for (List<Edge> edges : adjacencyList.values()) {
+//	        for (Edge edge : edges) {
+//	            if (edge.connects(vertex)) {
+//	                edgesToRemove.add(edge);
+//	            }
+//	        }
+//	    }
+//	    for (Edge edge : edgesToRemove) {
+//	        removeEdge(edge);
+//	    }
+	    // Xóa đỉnh này khỏi adjacency list.
+	    adjacencyList.remove(vertex);
+	    // Cập nhật adjacency matrix.
+	    setAdjacencyMatrix();
+	    // Nếu có view hiển thị đồ thị thì cũng cần xóa vertex view tương ứng.
+	    // ...
+	}
+
+	private void removeEdge(Edge edge) {
+	    Vertex source = edge.getSource();
+	    Vertex destination = edge.getDestination();
+	    adjacencyList.get(source).remove(edge);
+	    adjacencyList.get(destination).remove(edge);
 	}
 	// them 1 canh
 	public void addEdge(Vertex source, Vertex destination, int weight) {

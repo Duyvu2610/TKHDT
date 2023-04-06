@@ -61,6 +61,9 @@ public class GraphModel{
 //		setChanged();
 //		notifyObservers();
 	}
+	public void removeVertex(Vertex vertex) {
+		graph.removeVertex(vertex);
+	}
 
 	
 }
