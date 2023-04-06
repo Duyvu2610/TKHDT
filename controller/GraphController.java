@@ -27,21 +27,21 @@ public class GraphController  implements Subject {
 		this.view = view;
 	}
 
-	public void setStartVertex(Vertex startVertex) {
-		model.setStartVertex(startVertex);
-	}
+//	public void setStartVertex(Vertex startVertex) {
+//		model.setStartVertex(startVertex);
+//	}
+//
+//	public void setEndVertex(Vertex endVertex) {
+//		model.setEndVertex(endVertex);
+//	}
+//
+//	public void setPathFindingStrategy(PathFindingStrategy pathFindingStrategy) {
+//		model.setPathFindingStrategy(pathFindingStrategy);
+//	}
 
-	public void setEndVertex(Vertex endVertex) {
-		model.setEndVertex(endVertex);
-	}
-
-	public void setPathFindingStrategy(PathFindingStrategy pathFindingStrategy) {
-		model.setPathFindingStrategy(pathFindingStrategy);
-	}
-
-	public List<Vertex> getShortestPath() {
-		return model.getShortestPath();
-	}
+//	public List<Vertex> getShortestPath() {
+//		return model.getShortestPath();
+//	}
 	public int[][] getMatrix(){
 		return model.getMatrix();
 	}
@@ -52,6 +52,10 @@ public class GraphController  implements Subject {
 		model.addVertex(v);
 		notifyObservers();
 		updateNotify("Nhập tên của đỉnh");
+	}
+	public void removeVertex(Vertex vertex) {
+		model.removeVertex(vertex);
+		notifyObservers();
 	}
     public void registerObserver(Observer observer) {
         observers.add(observer);
@@ -80,4 +84,5 @@ public class GraphController  implements Subject {
     public int getCodeExcute() { 
     	return this.codeExcute;
     }
+    
 }
